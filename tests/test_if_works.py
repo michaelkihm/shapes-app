@@ -3,4 +3,4 @@ def sum(a: int, b: int):
 
 
 def test_sum():
-    assert sum(2, 2) == 4
+    assert sum(4, 4) == 8
