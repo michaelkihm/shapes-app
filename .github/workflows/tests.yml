@@ -1,6 +1,8 @@
 name: Tests
   
 on:  
+  push:
+    branches: [ main ]
   pull_request:  
     branches: [ main ]  
   
@@ -16,6 +18,7 @@ jobs:
   
       - name: Install dependencies  
         run: |  
+          apt-get update && apt-get install -y libc-dev libffi-dev libjpeg-dev ffmpeg gcc
           python -m pip install --upgrade pip  
           pip install -r requirements/base.txt
           pip install -r requirements/dev.txt
@@ -35,6 +38,7 @@ jobs:
   
       - name: Install dependencies  
         run: |  
+          apt-get update && apt-get install -y libc-dev libffi-dev libjpeg-dev ffmpeg gcc
           python -m pip install --upgrade pip  
           pip install -r requirements/base.txt
           pip install -r requirements/dev.txt
