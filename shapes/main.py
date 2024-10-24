@@ -1,9 +1,11 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
 from ultralytics import YOLO
 
-ML_MODELS: dict[str, YOLO] = {}
+from .dependencies import ML_MODELS
+from .routers import index, uploads
 
 
 @asynccontextmanager
@@ -16,7 +18,16 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+# Routers
+app.include_router(index.router)
+app.include_router(uploads.router)
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+
+# Enable CORS if needed
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)

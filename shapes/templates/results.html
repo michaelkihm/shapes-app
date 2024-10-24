@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com" defer></script>
+    <title>Document</title>
+</head>
+<body>
+    <h1 class="flex items-center text-xl text-white h-14 p-2"
+        style="background-image: linear-gradient(to right, rgba(106, 164, 184, 0.95) 0%, rgb(85, 126, 187) 100%);">
+        iDAI.mining-shapes
+    </h1>
+    <div class="p-2">
+        <ul>
+            {% for item in predictions %}
+                <li>{{ item["label"] }}: {{ item["conf"] }}</li>
+            {% endfor %}
+        </ul>
+        <a href="/">Upload another image</a>
+    </div>
+</body>
+</html>
