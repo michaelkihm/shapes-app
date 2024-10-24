@@ -17,8 +17,8 @@ jobs:
       - name: Install dependencies  
         run: |  
           python -m pip install --upgrade pip  
-          pip install -r base/requirements.txt
-          pip install -r base/dev.txt
+          pip install -r requirements/base.txt
+          pip install -r requirements/dev.txt
   
       - name: Run pytest  
         run: |  
@@ -36,8 +36,8 @@ jobs:
       - name: Install dependencies  
         run: |  
           python -m pip install --upgrade pip  
-          pip install -r base/requirements.txt
-          pip install -r base/dev.txt
+          pip install -r requirements/base.txt
+          pip install -r requirements/dev.txt
   
       - name: Run pyright  
         run: pyright  
