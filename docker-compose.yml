@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  shapes:
+    build: .
+    command: uvicorn shapes.main:app --host 0.0.0.0 --reload --reload-dir=shapes --reload-delay 1
+    volumes:
+      - ./.:/shapes
+    ports:
+      - "8004:8000"
+    # networks:
+    #   - shapes
+    stdin_open: true
+    tty: true
+# networks:
+#   shapes:
+#     name: shapes
+#     driver: bridge
