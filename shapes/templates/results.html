@@ -12,14 +12,23 @@
         iDAI.mining-shapes
     </h1>
     <div class="p-2">
-        <img src="/static/imgs/{{ original_image }}" alt="Original Image" class="w-[500px] pb-2" />
+ 
+        <div class="flex gap-4 p-2 ">
+            <img src="/static/imgs/{{ original_image }}" alt="Original Image" class="w-[500px]" />
+            <a class="h-10 p-2 rounded bg-green-400" href="/">Upload another image</a> 
+        </div>
+        
         <div class="h-px w-full bg-black"></div>
-            <ul>
-                {% for item in predictions %}
-                    <li>{{ item["label"] }}: {{ item["conf"] }}</li>
-                {% endfor %}
-            </ul>
-            <a class="p-2 rounded bg-green-400" href="/">Upload another image</a>
+        <p> Detections</p>
+        <div class="flex gap-2 py-2">
+            {% for det in predictions %}
+                <div>
+                    <img src="/static/imgs/{{ det['img'] }}" alt="Detection" class="h-[150px]" />
+                    <p>{{det["label"] }}: {{ det["conf"] }}</p>
+                </div>
+            {% endfor %}
+        </div>
+  
     </div>
 </body>
 </html>

@@ -2,9 +2,12 @@ import os
 import shutil
 from typing import TypedDict
 
+import cv2
+import numpy as np
 from fastapi import APIRouter, Depends, File, Request, UploadFile
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from torch import Tensor
 from ultralytics import YOLO
 from ultralytics.engine.results import Boxes, Results
 
@@ -16,8 +19,17 @@ router = APIRouter()
 
 class PredResult(TypedDict):
     conf: float
-    box: list[int]
+    box: list[int]  # box x,y,w,h
     label: str
+
+
+def convert_xywh_to_box(xywh_box: Tensor) -> list[int]:
+    """
+    Convert ultralytics xywh bounding box [x_center, y_center, width, height]
+    to [x,y,w,h]
+    """
+    x_c, y_c, w, h = xywh_box[0].numpy().tolist()
+    return [int(x_c - w / 2), int(y_c - h / 2), int(w), int(h)]
 
 
 def extract_results(
@@ -30,12 +42,26 @@ def extract_results(
             continue
         predictions.append(
             {
-                "conf": conf,
-                "box": box.xywh[0].numpy().tolist(),
+                "conf": round(conf, 2),
+                "box": convert_xywh_to_box(box.xywh),
                 "label": names[int(box.cls)],
             }
         )
     return predictions
+
+
+def crop_detections(detections: list[PredResult], query_img: np.ndarray) -> list[str]:
+    paths: list[str] = []
+    for i, det in enumerate(detections):
+        x, y, w, h = det["box"]
+        path = f"shapes/static/imgs/detection_{i}.jpg"
+        paths.append(path)
+        cv2.imwrite(
+            path,
+            query_img[y : y + h, x : x + w],
+        )
+
+    return paths
 
 
 @router.post("/upload", response_class=HTMLResponse)
@@ -52,11 +78,24 @@ async def get(
     assert results[0].boxes
     predictions = extract_results(results[0].boxes, results[0].names)
 
+    print(
+        [
+            {**pred, "img": os.path.basename(det)}
+            for pred, det in zip(
+                predictions, crop_detections(predictions, cv2.imread(img_p))
+            )
+        ]
+    )
     return templates.TemplateResponse(
         "results.html",
         {
             "request": request,
-            "predictions": predictions,
+            "predictions": [
+                {**pred, "img": os.path.basename(det)}
+                for pred, det in zip(
+                    predictions, crop_detections(predictions, cv2.imread(img_p))
+                )
+            ],
             "original_image": os.path.basename(img_p),
         },
     )
