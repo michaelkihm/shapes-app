@@ -1,6 +1,6 @@
 from ultralytics import YOLO
 
-from .main import ML_MODELS
+ML_MODELS: dict[str, YOLO] = {}
 
 
 def get_yolo() -> YOLO:

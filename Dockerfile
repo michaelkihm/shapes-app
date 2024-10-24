@@ -7,3 +7,5 @@ WORKDIR /shapes
 COPY requirements/base.txt .
 RUN pip install -U pip
 RUN pip install --no-cache-dir -r base.txt
+
+COPY shapes /shapes
