@@ -12,12 +12,14 @@
         iDAI.mining-shapes
     </h1>
     <div class="p-2">
-        <ul>
-            {% for item in predictions %}
-                <li>{{ item["label"] }}: {{ item["conf"] }}</li>
-            {% endfor %}
-        </ul>
-        <a href="/">Upload another image</a>
+        <img src="/static/imgs/{{ original_image }}" alt="Original Image" class="w-[500px] pb-2" />
+        <div class="h-px w-full bg-black"></div>
+            <ul>
+                {% for item in predictions %}
+                    <li>{{ item["label"] }}: {{ item["conf"] }}</li>
+                {% endfor %}
+            </ul>
+            <a class="p-2 rounded bg-green-400" href="/">Upload another image</a>
     </div>
 </body>
 </html>

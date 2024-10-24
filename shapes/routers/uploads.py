@@ -1,3 +1,4 @@
+import os
 import shutil
 from typing import TypedDict
 
@@ -42,7 +43,7 @@ async def get(
     request: Request, file: UploadFile = File(...), yolo: YOLO = Depends(get_yolo)
 ):
     # Save the uploaded file
-    img_p = "imgs/uploaded_image.jpg"
+    img_p = "shapes/static/imgs/uploaded_image.jpg"
     with open(img_p, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
@@ -56,5 +57,6 @@ async def get(
         {
             "request": request,
             "predictions": predictions,
+            "original_image": os.path.basename(img_p),
         },
     )
