@@ -12,6 +12,8 @@ services:
     #   - shapes
     stdin_open: true
     tty: true
+    env_file:
+      - secrets.env
 # networks:
 #   shapes:
 #     name: shapes

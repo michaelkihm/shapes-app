@@ -65,7 +65,7 @@ def crop_detections(detections: list[PredResult], query_img: np.ndarray) -> list
 
 
 @router.post("/upload", response_class=HTMLResponse)
-async def get(
+async def model_inference(
     request: Request, file: UploadFile = File(...), yolo: YOLO = Depends(get_yolo)
 ):
     # Save the uploaded file

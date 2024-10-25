@@ -165,3 +165,11 @@ cython_debug/
 
 # Image dir
 imgs
+
+# ENV files
+secrets.env
+
+# Training logs
+wandb
+yolo11n
+runs
