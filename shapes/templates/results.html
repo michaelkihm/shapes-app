@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com" defer></script>
-    <title>Document</title>
+    <title>iDAI.mining-shapes</title>
 </head>
 <body>
     <h1 class="flex items-center text-xl text-white h-14 p-2"
@@ -12,23 +12,20 @@
         iDAI.mining-shapes
     </h1>
     <div class="p-2">
- 
-        <div class="flex gap-4 p-2 ">
-            <img src="/static/imgs/{{ original_image }}" alt="Original Image" class="w-[500px]" />
-            <a class="h-10 p-2 rounded bg-green-400" href="/">Upload another image</a> 
-        </div>
-        
-        <div class="h-px w-full bg-black"></div>
-        <p> Detections</p>
-        <div class="flex gap-2 py-2">
-            {% for det in predictions %}
-                <div>
-                    <img src="/static/imgs/{{ det['img'] }}" alt="Detection" class="h-[150px]" />
-                    <p>{{det["label"] }}: {{ det["conf"] }}</p>
+        <div class="flex flex-col gap-2">
+            {% for img, img_detections in detections.items() %}
+                <div class="flex gap-1">
+                    <img src="/static/imgs/{{ img }}" alt="Original Image" class="w-[500px]" />
+                    {% for det in img_detections %}
+                        <div>
+                            <img src="/static/imgs/{{ det['img'] }}" alt="Detection" class="h-[150px]" />
+                            <p>{{det["label"] }}: {{ det["conf"] }}</p>
+                        </div>
+                    {% endfor %}
                 </div>
+                <div class="h-px w-full bg-black"></div>
             {% endfor %}
-        </div>
-  
+        </div> 
     </div>
 </body>
 </html>
